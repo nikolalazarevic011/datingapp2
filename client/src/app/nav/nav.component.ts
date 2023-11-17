@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { User } from '../_models/user';
 import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -14,7 +16,11 @@ export class NavComponent {
   // currentUser$: Observable<User | null> = of(null);
 
   //public da bi mogao u html strani da ga koristis
-  constructor(public accountService: AccountService) {}
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     //dir cemo da ga zovemo u html zbog lin 16 Public accservice
@@ -23,14 +29,17 @@ export class NavComponent {
 
   login() {
     this.accountService.login(this.model).subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (error) => console.log(error),
+      // next: (response) => {
+      //   this.router.navigateByUrl('/members')
+      // },
+      //! vidjaces i ovako u kodu, a moze i da budu zagrade posle next(), umesto _
+      next: (_) => this.router.navigateByUrl('/members'),
+      error: (error) => this.toastr.error(error.error),
     });
   }
 
   logout() {
     this.accountService.logout();
+    this.router.navigateByUrl('');
   }
 }
