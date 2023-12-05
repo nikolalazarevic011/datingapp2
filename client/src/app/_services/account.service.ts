@@ -7,6 +7,7 @@ import { User } from '../_models/user';
   providedIn: 'root',
 })
 export class AccountService {
+  //!   da li JE MOGUCE DA ZBOG HTTP STO SI STAVIO ISPOD KADA SI MENJAO DA BUDE HTTP FRONT.. DA SI STAVIO DA JE HTTP BACK A UVEK JE BIO HTTPS!!!
   baseUrl: any = 'https://localhost:5001/api/'; //sam si dodao any
   private currentUserSource = new BehaviorSubject<User | null>(null);
   //$ da se zna da je observable kad ga korisis u radnom comps

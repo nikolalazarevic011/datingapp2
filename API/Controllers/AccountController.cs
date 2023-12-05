@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,7 @@ public class AccountController : BaseApiController
 
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
+        //?comparing the entered password with the one in db that's salted?
         for (int i = 0; i < computedHash.Length; i++)
         {
             if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("invalid password"); ;

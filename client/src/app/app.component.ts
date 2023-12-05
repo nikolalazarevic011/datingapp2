@@ -9,6 +9,7 @@ import { User } from './_models/user';
 })
 export class AppComponent implements OnInit {
   title = 'client';
+  users: any;
   constructor(
     private accountService: AccountService
   ) {}

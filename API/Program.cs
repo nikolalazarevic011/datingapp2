@@ -1,7 +1,5 @@
-using System.Text;
+using API.Errors;
 using API.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +14,11 @@ var app = builder.Build();
 
 //! order important 
 // Configure the HTTP request pipeline.
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+//!exception middleware mora na vrh pre svega
+app.UseMiddleware<ExceptionMiddleware>();
+
+//! http because you had problems with https in sec 7
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -21,6 +21,8 @@ public class UsersController : BaseApiController
 
     [AllowAnonymous]
     [HttpGet]
+    //IEnumerable for a list
+
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
     {
         var users = await _context.Users.ToListAsync();
@@ -32,7 +34,8 @@ public class UsersController : BaseApiController
     [HttpGet("{id}")] // /api/users/2
     public async Task<ActionResult<AppUser>> GetUser(int id)
     {
-        var user = await _context.Users.FindAsync(id);
+        //find dobar kad searchujes po primary key, kao sto je id
+        var user = await _context.Users.FindAsync(id); 
 
         return user;
     }

@@ -9,6 +9,7 @@ public class DataContext : DbContext
     {
     }
 
+//! Users jer tako hocemo da nam se zove tabela u bazi
     public DbSet<AppUser> Users
     {
         get; set;
