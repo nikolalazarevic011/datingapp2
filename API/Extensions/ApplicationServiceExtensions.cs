@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
 
-public static class ApplicationServiceExtensions //! static 
+public static class ApplicationServiceExtensions //! static mora jer je extesnion
 {
-    public static IServiceCollection AddApplicationServices( this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<DataContext>(opt =>
         {
@@ -14,6 +14,8 @@ public static class ApplicationServiceExtensions //! static
 
         services.AddCors();
         services.AddScoped<ITokenService, TokenService>(); //moras i interface i implementation
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return services;
     }
