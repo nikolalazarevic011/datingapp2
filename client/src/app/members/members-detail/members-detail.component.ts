@@ -1,10 +1,51 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import {
+  GalleryImageDef,
+  GalleryItem,
+  GalleryModule,
+  ImageItem,
+} from 'ng-gallery';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { Member } from 'src/app/_models/member';
+import { MembersService } from 'src/app/_services/members.service';
 
 @Component({
   selector: 'app-members-detail',
   templateUrl: './members-detail.component.html',
-  styleUrls: ['./members-detail.component.css']
+  styleUrls: ['./members-detail.component.css'],
+  standalone: true,
+  imports: [CommonModule, TabsModule, GalleryModule],
 })
-export class MembersDetailComponent {
+export class MembersDetailComponent implements OnInit {
+  member: Member | undefined;
+  images: GalleryItem[] = [];
 
+  constructor(
+    private memberService: MembersService,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.loadMember();
+  }
+
+  loadMember() {
+    // moramo defensive coding ovde jer ne zna tuter da li ce biti 'username'
+    const username = this.route.snapshot.paramMap.get('username');
+    if (!username) return;
+    this.memberService.getMember(username).subscribe({
+      next: (member) => {
+        (this.member = member), this.getImages();
+      },
+    });
+  }
+
+  getImages() {
+    if (!this.member) return;
+    for (const photo of this.member?.photos) {
+      this.images.push(new ImageItem({ src: photo.url, thumb: photo.url }));
+    }
+  }
 }
