@@ -9,6 +9,8 @@ import { authGuard } from './_guards/auth.guard';
 import { TestErrorsComponent } from './errors/test-errors/test-error.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { preventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,14 +21,15 @@ const routes: Routes = [
     children: [
       { path: 'members', component: MembersListComponent },
       { path: 'members/:username', component: MembersDetailComponent },
+      { path: 'member/edit', component: MemberEditComponent, canDeactivate: [preventUnsavedChangesGuard] }, //mora da se skloni S iz memberS 117.
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
     ],
   },
   { path: 'errors', component: TestErrorsComponent },
-  {path: 'errors', component: TestErrorsComponent},
-  {path: 'not-found', component: NotFoundComponent},
-  {path: 'server-error', component: ServerErrorComponent},
+  { path: 'errors', component: TestErrorsComponent },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: 'server-error', component: ServerErrorComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },
 ];
 
