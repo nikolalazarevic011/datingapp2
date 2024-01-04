@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class AccountService {
   //!   da li JE MOGUCE DA ZBOG HTTP STO SI STAVIO ISPOD KADA SI MENJAO DA BUDE HTTP FRONT.. DA SI STAVIO DA JE HTTP BACK A UVEK JE BIO HTTPS!!!
   // baseUrl: any = 'https://localhost:5001/api/'; //sam si dodao any
-   baseUrl= environment.apiUrl;
+  baseUrl = environment.apiUrl;
   private currentUserSource = new BehaviorSubject<User | null>(null);
   //$ da se zna da je observable kad ga korisis u radnom comps
   currentUser$ = this.currentUserSource.asObservable();
@@ -22,8 +22,7 @@ export class AccountService {
       map((response: User) => {
         const user = response;
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user)
         }
       })
     );
@@ -33,8 +32,7 @@ export class AccountService {
     return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
       map((user) => {
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
         //! moras ovde return, ako ocekujes nesto od apija
         // return user;
@@ -43,6 +41,7 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
